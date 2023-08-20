@@ -2,8 +2,8 @@
 Cube Arrays version 1.0 - STM32CubeMonitor function node for watching multiple one-dimensional arrays.
 
 Files:
-1) cubearrays10.json - JSON file ready to import in STM32CubeMonitor. Contains function node and three chart nodes
-2) cubearrays10.js - for reference only,  Cube Arrays "On Message" tab source code (already included in JSON file)
+(1) cubearrays10.json - JSON file ready to import in STM32CubeMonitor. Contains function node and three chart nodes
+(2) cubearrays10.js - for reference only,  Cube Arrays "On Message" tab source code (already included in JSON file)
 
 1. Download Cube Arrays v 1.0 .\cubearrays10.json
 2. Open STM32CubeMonitor, find three stripes / hamburger in up-right corner and press it to open menu → Import
