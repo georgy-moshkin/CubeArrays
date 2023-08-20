@@ -1,0 +1,159 @@
+[
+    {
+        "id": "c636579d3773d666",
+        "type": "ui_chart",
+        "z": "7b9ed63e.2138f8",
+        "name": "",
+        "group": "f9c34dde.1e2f4",
+        "order": 2,
+        "width": "10",
+        "height": "4",
+        "label": "Chart #1",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "x",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "-35000",
+        "ymax": "35000",
+        "removeOlder": "0",
+        "removeOlderPoints": "64",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 700,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "67cf1790717fb506",
+        "type": "ui_chart",
+        "z": "7b9ed63e.2138f8",
+        "name": "",
+        "group": "f9c34dde.1e2f4",
+        "order": 2,
+        "width": "10",
+        "height": "4",
+        "label": "Chart #2",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "x",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "15000",
+        "removeOlder": "0",
+        "removeOlderPoints": "64",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 700,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3c16cc4986296590",
+        "type": "function",
+        "z": "7b9ed63e.2138f8",
+        "name": "CubeArrays v1.0 1D array\\n viewer, download from\\n www.thundertronics.com",
+        "func": "// Thundertronics.com CubeArrays v1.0\n//\n// INSTRUCTIONS:\n//\n// Step 1: Open \"Setup\" tab and set number of outputs\n//    equal to number of arrays _N_\n//\n// Step 2: Open \"On Message\" tab and fill in arrayNames\n//         with _N_ array names (case sensitive!)\n//\n// Step 3: Add _N_ chart nodes, connect their inputs to\n//         this function outputs\n//\n// Step 4: Open each chart node, set \"X-axis-Label\" to\n//         \"custom\" and enter x as a label\n//\n// Step 5: Open each chart node, set \"X-axis\" \"OR\" points\n//         equal to number of array elements for this chart\n//\n// Check www.thundertronics.com for updates and more\n// examples\n\n// Replace \"arrayName1\", \"arrayName2\", \"arrayName 3\"\n// with actual array names, e.g. \"myArray\", \"signal\",\n// \"TESTARRAY\", etc.:\nconst arrayNames=[\"arrayName1\",\"arrayName2\",\"arrayName3\"];\n\nlet str=msg.payload.variablename;\n\nif (str.indexOf(\"[\")===-1) {return null;} \n\nlet arrayName = str.substring(\n    0,\n    str.indexOf(\"[\")\n);\n\nlet arrayIndex = parseInt(str.substring(\n    str.indexOf(\"[\")+1,\n    str.indexOf(\"]\")\n));\n\nlet globalArrayName=\"global\"+arrayName;\n\nif (global.get(globalArrayName) === undefined) \n{\n    global.set(globalArrayName, []);\n}\n\nglobal.set(globalArrayName+\"[\"+arrayIndex+\"]\",msg.payload.variabledata[0].y);\n\nif (arrayIndex===9) \n    {\n        let tmpArr = [];\n        let array_size = global.get(globalArrayName).length;\n\n        if (array_size===0) return null;\n\n        for (let i = 0; i < array_size; i++) {\n            tmpArr.push({ \"x\": i, \"y\": global.get(globalArrayName+\"[\"+i+\"]\") })\n        }\n\n\n\n        msg.payload = [{\n            \"series\": [\"signal\"],\n            \"data\": [tmpArr],\n            \"labels\": [\"myLabel\"]\n            }]\n\n        for (let i = 0; i < arrayNames.length; i++) \n        if (arrayName===arrayNames[i])       \n        {\n            let chartMessages = new Array(arrayNames.length).fill(null);\n            chartMessages[i]=msg;\n            return chartMessages;\n        }\n    }\n\nreturn null;",
+        "outputs": 3,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 200,
+        "wires": [
+            [
+                "c636579d3773d666"
+            ],
+            [
+                "67cf1790717fb506"
+            ],
+            [
+                "2ada7085ebb10beb"
+            ]
+        ]
+    },
+    {
+        "id": "2ada7085ebb10beb",
+        "type": "ui_chart",
+        "z": "7b9ed63e.2138f8",
+        "name": "",
+        "group": "f9c34dde.1e2f4",
+        "order": 2,
+        "width": "10",
+        "height": "4",
+        "label": "Chart #3",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "x",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "15000",
+        "removeOlder": "0",
+        "removeOlderPoints": "64",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 700,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    }
+]
